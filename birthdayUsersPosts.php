@@ -1,10 +1,11 @@
 <?php
+
 include 'database.php';
 
 $db_mysql = new Database();
 $db_mysql->connect();
 
-$result = $db_mysql->select_posts_of_actives();
+$result = $db_mysql->select_posts_of_birthday_users();
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {

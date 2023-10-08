@@ -10,21 +10,6 @@
 
 <body>
     <?php
-    //// Step 1
-    // include 'downloadAvatar.php';
-    // downloadImage();
-    
-    //// Step 2
-    // include 'createTables.php';
-    
-    //// Step 3
-    // include 'fillTables.php';
-
-    //// Step 4
-    // include 'insertBirthday.php';
-
-    //// Step 5
-    // include 'summaryPosts.php';
     ?>
 
     <h1 class="main-title">inManange Social Media</h1>
@@ -42,7 +27,7 @@
             if ($tab === 'tab1') {
                 include('feedPosts.php');
             } elseif ($tab === 'tab2') {
-                include('insertBirthday.php');
+                include('birthdayUsersPosts.php');
             } elseif ($tab === 'tab3') {
                 include('summaryPosts.php');
             }
