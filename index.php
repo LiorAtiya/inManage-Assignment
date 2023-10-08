@@ -4,39 +4,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>inManange Social Media</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 
 <body>
     <?php
-
-    include 'downloadAvatar.php';
-    include 'db_connection.php';
-
-    $conn = databaseConnection();
-
+    //// Step 1
+    // include 'downloadAvatar.php';
     // downloadImage();
+    
+    //// Step 2
+    // include 'createTables.php';
+    
+    //// Step 3
+    // include 'fillTables.php';
 
-    $sql = "SELECT * FROM users JOIN posts ON users.id = posts.user_id AND users.active = 1;";
-    $result = $conn->query($sql);
+    //// Step 4
+    // include 'insertBirthday.php';
 
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            echo '<div class="user-post">';
-            echo '<div class="header-post">';
-            // echo '<img src="' . $row['profile_image'] . '" alt="' . $row['name'] . '">';
-            echo '<img src="avatar.jpg" class="image" alt="avatar">';
-            echo '<strong>' . $row['name'] . '</strong>';
-            echo '</div>';
-            echo '<p>' . $row['title'] . '</p>';
-            echo '<p>' . $row['content'] . '</p>';
-            echo '</div>';
-        }
-    } else {
-        echo "No active users found.";
-    }
+    //// Step 5
+    // include 'summaryPosts.php';
     ?>
+
+    <h1 class="main-title">inManange Social Media</h1>
+    <div class="tab-container">
+        <div class="tabs">
+            <a href="?tab=tab1" class='title-tab'>Feed</a>
+            <a href="?tab=tab2" class='title-tab'>Posts of Birthday users</a>
+            <a href="?tab=tab3" class='title-tab'>Summary Posts</a>
+        </div>
+        <div class="tab-content">
+            <?php
+            // Determine which tab to display based on the 'tab' query parameter
+            $tab = isset($_GET['tab']) ? $_GET['tab'] : 'tab1';
+
+            if ($tab === 'tab1') {
+                include('feedPosts.php');
+            } elseif ($tab === 'tab2') {
+                include('insertBirthday.php');
+            } elseif ($tab === 'tab3') {
+                include('summaryPosts.php');
+            }
+            ?>
+        </div>
+    </div>
 </body>
 
 </html>
