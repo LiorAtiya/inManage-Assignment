@@ -29,7 +29,7 @@ class Database
             active BOOLEAN DEFAULT 1
         );";
 
-        $this->connection->query($sql);
+        return $this->connection->query($sql);
     }
 
     public function create_posts_table()
@@ -43,7 +43,7 @@ class Database
             active BOOLEAN DEFAULT 1,
             FOREIGN KEY (user_id) REFERENCES users(id)
         );";
-        $this->connection->query($sql);
+        return $this->connection->query($sql);
     }
 
     public function select_posts_of_actives()

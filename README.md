@@ -14,13 +14,16 @@ Using a MySQL database to store their filling tables using a json file extracted
 </div>
 
 <h2>Getting Started</h2>
-  1. Download PHP and MySQL local to your computer
-     Or an easy option: download XAMPP and run PHP & MySQL
+  1. Download PHP and MySQL local to your computer <br>
+      Or an easy option: download XAMPP and run PHP & MySQL
    
 2. Clone the repository
    ```sh
    git clone https://github.com/LiorAtiya/inManage-Assignment.git
    ```
    
-3. Run the "first_run.php" file once to generate the tables and insert the information into the content.
+3. Run the "first_run.php" file once to generate the tables and insert the information into the content. <br>
+   You should see a screen like this: <br>
+   <img width="433" alt="Screenshot 2023-10-10 at 1 22 45" src="https://github.com/LiorAtiya/inManage-Assignment/assets/22147116/7f6733bb-ab5f-4ab1-ac0c-e72ca497ed88">
+
 4. Run index.php file

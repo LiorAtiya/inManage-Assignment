@@ -8,8 +8,20 @@ $db_mysql->connect();
 function create_users_and_posts_tables()
 {
     global $db_mysql;
-    $db_mysql->create_users_table();
-    $db_mysql->create_posts_table();
+    $result = $db_mysql->create_users_table();
+    if ($result !== false) {
+        echo "Creating the users table was successful <br>";
+    }else {
+        echo "Failed to create users table  <br>";
+    }
+
+    $result = $db_mysql->create_posts_table();
+    if ($result !== false) {
+        echo "Creating the posts table was successful <br>";
+    }else {
+        echo "Failed to create posts table <br>";
+    }
+
 }
 
 // insert info from fake REST api
@@ -17,30 +29,20 @@ function insert_info_to_users_and_posts()
 {
     global $db_mysql;
     $apiUrl = 'https://jsonplaceholder.typicode.com/users';
-    // Initialize cURL session
+
     $ch = curl_init($apiUrl);
-
-    // Set cURL options
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the response instead of echoing it
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Ignore SSL verification
-    curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Timeout in seconds
-
-    // Execute cURL session and store the response
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
     $response = curl_exec($ch);
 
-    // Check for cURL errors
     if (curl_errno($ch)) {
-        // Handle the error
         echo 'cURL error: ' . curl_error($ch);
     } else {
-
-        // Close cURL session
         curl_close($ch);
 
-        // Decode the JSON response
         $data = json_decode($response, true);
 
-        // Check if decoding was successful
         if ($data !== null) {
 
             $fieldsArray = ["id", "name", "email", "active"];
@@ -54,24 +56,15 @@ function insert_info_to_users_and_posts()
 
                 $apiUrl = "https://jsonplaceholder.typicode.com/users/$id/posts";
 
-                // Initialize cURL session
                 $ch = curl_init($apiUrl);
-
-                // Set cURL options
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the response instead of echoing it
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Ignore SSL verification
-                curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Timeout in seconds
-
-                // Execute cURL session and store the response
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($ch, CURLOPT_TIMEOUT, 30);
                 $response = curl_exec($ch);
 
-                // Check for cURL errors
                 if (curl_errno($ch)) {
-                    // Handle the error
-                    echo 'cURL error: ' . curl_error($ch);
+                    echo 'cURL error: ' . curl_error($ch) .' <br>';
                 } else {
-
-                    // Close cURL session
                     curl_close($ch);
 
                     $data = json_decode($response, true);
@@ -82,9 +75,9 @@ function insert_info_to_users_and_posts()
                     }
                 }
             }
+            echo 'Inserting information from the Fake REST API was successful  <br>';
         } else {
-            // Handle JSON decoding error
-            echo 'JSON decoding error';
+            echo 'JSON decoding error  <br>';
         }
     }
 }
@@ -100,10 +93,10 @@ function download_profile_image()
     } else {
         $result = file_put_contents(__DIR__ . "/../assets/images/avatar.jpg", $imageContent);
         if ($result !== false) {
-            echo "Image saved successfully to image.jpg";
+            echo "Image saved successfully to avatar.jpg  <br>";
         } else {
-            echo "Failed to save the image to image.jpg";
-            var_dump(error_get_last());
+            echo "Failed to save the image to avatar.jpg  <br>";
+            // var_dump(error_get_last());
         }
     }
 }
@@ -113,9 +106,15 @@ function download_profile_image()
 function fill_birthday_column()
 {
     global $db_mysql;
-    $db_mysql->add_column("users", "birthday", "DATE");
+    $result = $db_mysql->add_column("users", "birthday", "DATE");
+    if ($result !== false) {
+        echo "Adding a birthday column was successful  <br>";
+    }else {
+        echo "Failed to add birthday column  <br>";
+    }
 
     for ($i = 1; $i < 11; $i++) {
         $db_mysql->update_row("users", "birthday", "1996-$i-1", "id = $i");
     }
+    echo "Filling the birthday column randomly was successful  <br>";
 }
