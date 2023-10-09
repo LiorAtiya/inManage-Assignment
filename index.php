@@ -9,8 +9,8 @@
 </head>
 
 <body>
-
-    <h1 class="main-title">inManange Social Media</h1>
+    <img src="/inManage-Assignment/assets/images/inManageLogo.png" style="margin:auto; display:flex" alt="logo">
+    <h1 class="main-title">Social Media</h1>
     <div class="tab-container">
         <div class="tabs">
             <a href="?tab=tab1" class='title-tab'>Feed</a>
