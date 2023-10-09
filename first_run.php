@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 include 'includes/initial_functions.php';
 
 create_users_and_posts_tables();

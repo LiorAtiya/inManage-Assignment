@@ -1,7 +1,6 @@
 <?php
 class Database
 {
-
     private $connection;
 
     public function connect()
@@ -67,14 +66,18 @@ class Database
 
     public function select_posts_count_summary()
     {
-        $sql = "SELECT DATE(creation_date) AS publish_date,
-            TIME(creation_date) AS publish_time,
-            COUNT(*) AS post_count
-            FROM posts
-            GROUP BY publish_date, publish_time;";
+        $result = $this->connection->query("SHOW TABLES LIKE 'summary'");
+        if ($result->num_rows == 0) {
+            $sql = "CREATE TABLE summary AS
+                SELECT DATE(creation_date) AS publish_date,
+                TIME(creation_date) AS publish_time,
+                COUNT(*) AS post_count
+                FROM posts
+                GROUP BY publish_date, publish_time;";
 
-        $result = $this->connection->query($sql);
-        return $result;
+            return $this->connection->query($sql);
+        }
+        return $this->connection->query("SELECT * FROM summary;");
     }
 
     public function add_column($table, $field, $type)
@@ -95,7 +98,7 @@ class Database
 
     public function insert_users($table, $fieldsArray, $valuesArray)
     {
-        
+
         $stmt = $this->connection->prepare("INSERT INTO $table ($fieldsArray[0], $fieldsArray[1], $fieldsArray[2], $fieldsArray[3]) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("issi", $valuesArray[0], $valuesArray[1], $valuesArray[2], $valuesArray[3]);
         $stmt->execute();

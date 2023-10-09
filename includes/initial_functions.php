@@ -17,35 +17,75 @@ function insert_info_to_users_and_posts()
 {
     global $db_mysql;
     $apiUrl = 'https://jsonplaceholder.typicode.com/users';
-    $response = file_get_contents($apiUrl);
+    // Initialize cURL session
+    $ch = curl_init($apiUrl);
 
-    if ($response !== false) {
+    // Set cURL options
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the response instead of echoing it
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Ignore SSL verification
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Timeout in seconds
+
+    // Execute cURL session and store the response
+    $response = curl_exec($ch);
+
+    // Check for cURL errors
+    if (curl_errno($ch)) {
+        // Handle the error
+        echo 'cURL error: ' . curl_error($ch);
+    } else {
+
+        // Close cURL session
+        curl_close($ch);
+
+        // Decode the JSON response
         $data = json_decode($response, true);
 
-        $fieldsArray = ["id", "name", "email", "active"];
-        $fields2Array = ["user_id", "title", "content", "creation_date", "active"];
+        // Check if decoding was successful
+        if ($data !== null) {
 
-        foreach ($data as $user) {
+            $fieldsArray = ["id", "name", "email", "active"];
+            $fields2Array = ["user_id", "title", "content", "creation_date", "active"];
 
-            $valuesArray = [$user['id'], $user['name'], $user['email'], (bool) rand(0, 1)];
-            $db_mysql->insert_users("users", $fieldsArray, $valuesArray);
+            foreach ($data as $user) {
+                $valuesArray = [$user['id'], $user['name'], $user['email'], (bool) rand(0, 1)];
+                $db_mysql->insert_users("users", $fieldsArray, $valuesArray);
 
-            $id = $user['id'];
+                $id = $user['id'];
 
-            $apiUrl = "https://jsonplaceholder.typicode.com/users/$id/posts";
-            $response = file_get_contents($apiUrl);
+                $apiUrl = "https://jsonplaceholder.typicode.com/users/$id/posts";
 
-            $data = json_decode($response, true);
+                // Initialize cURL session
+                $ch = curl_init($apiUrl);
 
-            foreach ($data as $post) {
+                // Set cURL options
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the response instead of echoing it
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Ignore SSL verification
+                curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Timeout in seconds
 
-                $valuesArray = [$post['userId'], $post['title'], $post['body'], null, (bool) rand(0, 1)];
-                $db_mysql->insert_posts("posts", $fields2Array, $valuesArray);
+                // Execute cURL session and store the response
+                $response = curl_exec($ch);
+
+                // Check for cURL errors
+                if (curl_errno($ch)) {
+                    // Handle the error
+                    echo 'cURL error: ' . curl_error($ch);
+                } else {
+
+                    // Close cURL session
+                    curl_close($ch);
+
+                    $data = json_decode($response, true);
+
+                    foreach ($data as $post) {
+                        $valuesArray = [$post['userId'], $post['title'], $post['body'], null, (bool) rand(0, 1)];
+                        $db_mysql->insert_posts("posts", $fields2Array, $valuesArray);
+                    }
+                }
             }
+        } else {
+            // Handle JSON decoding error
+            echo 'JSON decoding error';
         }
-    } else {
-        echo 'Failed to fetch data from the API';
-        var_dump(error_get_last());
     }
 }
 
