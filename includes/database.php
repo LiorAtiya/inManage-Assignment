@@ -95,6 +95,7 @@ class Database
 
     public function insert_users($table, $fieldsArray, $valuesArray)
     {
+        
         $stmt = $this->connection->prepare("INSERT INTO $table ($fieldsArray[0], $fieldsArray[1], $fieldsArray[2], $fieldsArray[3]) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("issi", $valuesArray[0], $valuesArray[1], $valuesArray[2], $valuesArray[3]);
         $stmt->execute();

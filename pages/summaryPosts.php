@@ -1,6 +1,6 @@
 <?php
 
-include 'database.php';
+include __DIR__ . '/../includes/database.php';
 
 $db_mysql = new Database();
 $db_mysql->connect();
